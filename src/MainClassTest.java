@@ -24,4 +24,16 @@ public class MainClassTest extends MainClass{
                 System.out.println("Упс..:( Вернулось неверное значение = " + num + " (<=" + trueResult + ")");
             }
     }
+    @Test
+    public void testGetClassString(){
+        String trueResult = "hello";
+
+        String str = this.getClassString();
+        if (str.toLowerCase().contains(trueResult)) {
+            System.out.println("Ура! :) Строка содержит '"+ trueResult + "'");
+        }
+        else {
+            System.out.println("Упс..:( Строка не содержит '"+ trueResult + "'");
+        }
+    }
 }
