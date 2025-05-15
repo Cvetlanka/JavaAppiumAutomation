@@ -130,7 +130,7 @@ public class FirstTest {
         boolean res = assertElementHasText(
                 By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
                 hasText,
-                "Искомый текст '" + hasText + "' не найден !"
+                "Искомый текст '" + hasText + "' не найден!"
         );
         Assert.assertEquals(
                 "Тест провален!",
@@ -141,10 +141,9 @@ public class FirstTest {
     }
 
     private boolean assertElementHasText(By by, String expected_text, String error_message) {
-        WebElement element = waitForElementPresent(by,"Не найден элемент'", 5 );
+        WebElement element = waitForElementPresent(by,"Не найден элемент!'", 5 );
 
         if( !element.getAttribute("text").contains(expected_text) ) {
-            error_message = "Искомый текст '" + expected_text + "' не найден";
             System.out.println(error_message);
             return false;
         }
