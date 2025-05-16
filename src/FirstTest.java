@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Objects;
 
 public class FirstTest {
@@ -138,6 +139,44 @@ public class FirstTest {
                 res
         );
         System.out.println("Тест для ДОМАШНЕГО ЗАДАНИЯ (Ex2: Создание метода) завершён!");
+    }
+
+    @Test // Тест для ДОМАШНЕГО ЗАДАНИЯ (Ex3: Тест: отмена поиска)
+    public void testCancelSearchWord() {
+        String search_word = "Sport";
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Не найден элемент 'Search Wikipedia'",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                search_word,
+                "Не найден элемент 'Search…'",
+                5
+        );
+
+        List<WebElement> elements_search = driver.findElements(By.id("org.wikipedia:id/page_list_item_title"));
+        if( elements_search.size() > 1 )
+            System.out.println("Найдено несколько статей со словом '" + search_word + "'");
+
+        waitForElementAndClear(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Не найдено поле поиска",
+                5
+        );
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Не найдена кнопка 'X' для отмены поиска",
+                5
+        );
+        waitForElementNotPresent(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Кнопка 'X' всё еще присутствует на странице",
+                5
+        );
+        System.out.println("Тест для ДОМАШНЕГО ЗАДАНИЯ Ex3: Тест: отмена поиска завершён!");
     }
 
     private boolean assertElementHasText(By by, String expected_text, String error_message) {
