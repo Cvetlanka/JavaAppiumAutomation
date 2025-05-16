@@ -179,6 +179,30 @@ public class FirstTest {
         System.out.println("Тест для ДОМАШНЕГО ЗАДАНИЯ Ex3: Тест: отмена поиска завершён!");
     }
 
+    @Test // Тест для ДОМАШНЕГО ЗАДАНИЯ (Ex4*: Тест: проверка слов в поиске)
+    public void testCheckSearchWordInArticle() {
+        String search_word = "Sport";
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Не найден элемент 'Search Wikipedia'",
+                5
+        );
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                search_word,
+                "Не найден элемент 'Search…'",
+                5
+        );
+
+        List<WebElement> elements_search = driver.findElements(By.id("org.wikipedia:id/page_list_item_title"));
+        for(WebElement elem: elements_search)
+            if (!elem.getText().contains(search_word))
+                System.out.println("Заголовок статьи '" + elem.getText() + "' НЕ содержит слово '" + search_word + "'");
+
+        System.out.println("Тест для ДОМАШНЕГО ЗАДАНИЯ Ex4*: Тест: проверка слов в поиске завершён!");
+    }
+
     private boolean assertElementHasText(By by, String expected_text, String error_message) {
         WebElement element = waitForElementPresent(by,"Не найден элемент!'", 5 );
 
