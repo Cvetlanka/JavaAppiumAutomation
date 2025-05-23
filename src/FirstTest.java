@@ -210,7 +210,7 @@ public class FirstTest {
                 "Кнопка 'X' всё еще присутствует на странице",
                 5
         );
-        System.out.println("Тест для ДОМАШНЕГО ЗАДАНИЯ Ex3: Тест: отмена поиска завершён!");
+        System.out.println("Тест для ДОМАШНЕГО ЗАДАНИЯ (Ex3: Тест: отмена поиска) завершён!");
     }
 
     @Test // Тест для ДОМАШНЕГО ЗАДАНИЯ (Ex4*: Тест: проверка слов в поиске)
@@ -234,11 +234,11 @@ public class FirstTest {
             if (!elem.getText().contains(search_word))
                 System.out.println("Заголовок статьи '" + elem.getText() + "' НЕ содержит слово '" + search_word + "'");
 
-        System.out.println("Тест для ДОМАШНЕГО ЗАДАНИЯ Ex4*: Тест: проверка слов в поиске завершён!");
+        System.out.println("Тест для ДОМАШНЕГО ЗАДАНИЯ (Ex4*: Тест: проверка слов в поиске) завершён!");
     }
 
     @Test // // Тест для ДОМАШНЕГО ЗАДАНИЯ (Ex5: Тест: Сохранение двух статей)
-    public void saveArticleToMyListAndDeleteFirstArticle_Ex5() {
+    public void testSaveArticleToMyListAndDeleteFirstArticle_Ex5() {
 
         String search_word = "Sport";
         String name_list = "My List of Sport";
@@ -269,7 +269,7 @@ public class FirstTest {
         );
         deleteArticleFromListAndCheckAnyArticle(second_article, name_list, first_article);
 
-        System.out.println("Тест для ДОМАШНЕГО ЗАДАНИЯ Ex5: Тест: Сохранение двух статей завершён!");
+        System.out.println("Тест для ДОМАШНЕГО ЗАДАНИЯ (Ex5: Тест: Сохранение двух статей) завершён!");
     }
 
     private void createListAndSaveArticleInIt(String first_article, String name_list) {
@@ -370,6 +370,47 @@ public class FirstTest {
         );
      }
 
+    @Test // Тест для ДОМАШНЕГО ЗАДАНИЯ (Ex6: Тест: assert title)
+    public void testAssertTitle_Ex6() {
+        String search_word = "Sport";
+        String article  = "Sporting CP";
+
+        waitForElementAndClick(By.xpath("//android.widget.Button[@resource-id='org.wikipedia:id/fragment_onboarding_skip_button']"),
+                "Не найден элемент 'Skip'",
+                5
+        );
+        waitForElementAndClick(By.xpath("//androidx.cardview.widget.CardView[@resource-id='org.wikipedia:id/search_container']"),
+                "Не найден элемент 'Search Wikipedia'",
+                5
+        );
+        waitForElementAndSendKeys(By.xpath("//android.widget.EditText[@resource-id='org.wikipedia:id/search_src_text']"),
+                search_word,
+                "Не найден элемент 'Search…'",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='"+ article +"']"),
+                "Не найдена статья '" + article + "' в поиске",
+                5
+        );
+
+        String title_path = "//*[@class='android.view.View'][@text='" + article + "']";
+        assertElementPresent(By.xpath(title_path), "Элемент '" + title_path + "' НЕ обнаружен!");
+
+        System.out.println("Тест для ДОМАШНЕГО ЗАДАНИЯ (Ex6: Тест: assert title) завершён!");
+    }
+
+    private void assertElementPresent(By by, String error_message){
+        Assert.assertTrue(error_message,
+                getAmountOfElements(by) > 0
+        );
+    }
+
+    private int getAmountOfElements(By by){
+        List elements = driver.findElements(by);
+        return elements.size();
+    }
+
     private boolean assertElementHasText(By by, String expected_text, String error_message) {
         WebElement element = waitForElementPresent(by,"Не найден элемент!'", 5 );
 
@@ -425,7 +466,12 @@ public class FirstTest {
         int start_y = (int)(size.height * 0.5);
         int end_y = (int)(size.height * 0.1);
 
-        action.press(x, start_y).waitAction(timeOfSwipe).moveTo(x, end_y).release().perform();
+        action
+                .press(x, start_y)
+                .waitAction(timeOfSwipe)
+                .moveTo(x, end_y)
+                .release()
+                .perform();
     }
 
     protected void swipeUpQuick(){
