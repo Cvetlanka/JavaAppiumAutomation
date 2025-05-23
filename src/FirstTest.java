@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -156,6 +157,38 @@ public class FirstTest {
                         20
         );
         System.out.println("Четвертый тест из урока завершён!");
+    }
+
+    @Test // Седьмой тест из обучающего урока
+    public void testCheckSearchArticleInBackground() {
+        String search_word = "Sport";
+        String article  = "Sporting CP";
+
+        waitForElementAndClick(By.xpath("//android.widget.Button[@resource-id='org.wikipedia:id/fragment_onboarding_skip_button']"),
+                "Не найден элемент 'Skip'",
+                5
+        );
+        waitForElementAndClick(By.xpath("//androidx.cardview.widget.CardView[@resource-id='org.wikipedia:id/search_container']"),
+                "Не найден элемент 'Search Wikipedia'",
+                5
+        );
+        waitForElementAndSendKeys(By.xpath("//android.widget.EditText[@resource-id='org.wikipedia:id/search_src_text']"),
+                search_word,
+                "Не найден элемент 'Search…'",
+                5
+        );
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='"+ article +"']"),
+                "Не найдена статья '" + article + "' в поиске",
+                15
+        );
+        driver.runAppInBackground(2);
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='"+ article +"']"),
+                "Не найдена статья '" + article + "' в поиске после возвращения из Background!",
+                15
+        );
+        System.out.println("Седьмой тест из урока завершён!");
     }
 
     @Test // Тест для ДОМАШНЕГО ЗАДАНИЯ (Ex2: Создание метода)
@@ -400,6 +433,64 @@ public class FirstTest {
         System.out.println("Тест для ДОМАШНЕГО ЗАДАНИЯ (Ex6: Тест: assert title) завершён!");
     }
 
+    @Test // // Тест для ДОМАШНЕГО ЗАДАНИЯ (Ex7*: Поворот экрана)
+    public void testChangeScreenOrientationOnScreenResults_Ex7(){
+        String search_word = "Sport";
+        String article  = "Sporting CP";
+
+        driver.rotate(ScreenOrientation.PORTRAIT);
+        waitForElementAndClick(By.xpath("//android.widget.Button[@resource-id='org.wikipedia:id/fragment_onboarding_skip_button']"),
+                "Не найден элемент 'Skip'",
+                5
+        );
+        waitForElementAndClick(By.xpath("//androidx.cardview.widget.CardView[@resource-id='org.wikipedia:id/search_container']"),
+                "Не найден элемент 'Search Wikipedia'",
+                5
+        );
+        waitForElementAndSendKeys(By.xpath("//android.widget.EditText[@resource-id='org.wikipedia:id/search_src_text']"),
+                search_word,
+                "Не найден элемент 'Search…'",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='"+ article +"']"),
+                "Не найдена статья '" + article + "' в поиске",
+                15
+        );
+        String title_before_rotation = waitForElementAndGetAttribute(
+                By.xpath("//*[@resource-id='pcs']//*//*[@class='android.view.View']"),
+                "text",
+                "Не найден заголовок статьи '" + article + "'",
+                15
+        );
+        driver.rotate(ScreenOrientation.LANDSCAPE);
+        String title_after_rotation = waitForElementAndGetAttribute(
+                By.xpath("//*[@resource-id='pcs']//*//*[@class='android.view.View']"),
+                "text",
+                "Не найден заголовок статьи '" + article + "'",
+                15
+        );
+        Assert.assertEquals(
+                "Заголовок статьи изменился после первого поворота экрана!\n Был '" + title_before_rotation + "'.\n Стал '" + title_after_rotation + "'.",
+                title_before_rotation,
+                title_after_rotation
+        );
+        driver.rotate(ScreenOrientation.PORTRAIT);
+        String title_after_second_rotation = waitForElementAndGetAttribute(
+                By.xpath("//*[@resource-id='pcs']//*//*[@class='android.view.View']"),
+                "text",
+                "Не найден заголовок статьи '" + article + "'",
+                15
+        );
+        Assert.assertEquals(
+                "Заголовок статьи изменился после второго поворота экрана!\n Был '" + title_before_rotation + "'.\n Стал '" + title_after_second_rotation + "'.",
+                title_before_rotation,
+                title_after_second_rotation
+        );
+
+        System.out.println("Тест для ДОМАШНЕГО ЗАДАНИЯ (Ex7*: Поворот экрана) завершён!");
+    }
+
     private void assertElementPresent(By by, String error_message){
         Assert.assertTrue(error_message,
                 getAmountOfElements(by) > 0
@@ -514,6 +605,11 @@ public class FirstTest {
                 .moveTo(left_x,middle_y)
                 .release()
                 .perform();
+    }
+
+    private String waitForElementAndGetAttribute(By by, String attribute, String error_message, long timeInSeconds){
+        WebElement element = waitForElementPresent(by, error_message,timeInSeconds);
+        return element.getAttribute(attribute);
     }
 }
 
