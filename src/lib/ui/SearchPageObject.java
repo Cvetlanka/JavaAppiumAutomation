@@ -14,7 +14,8 @@ public class SearchPageObject extends MainPageObject{
             SEARCH_RESULT_ELEMENT = "org.wikipedia:id/page_list_item_title",// Search
             SEARCH_EMPTY_RESULT_ELEMENT = "org.wikipedia:id/results_text",
             SEARCH_CANCEL_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']",
-            SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='{SUBSTRING}']";
+            SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='{SUBSTRING}']",
+            SEARCH_DESCRIPTION_AND_TITLE_BY_SUBSTRING_TPL ="org.wikipedia:id/{SUBSTRING}";
 
     public SearchPageObject(AppiumDriver driver){
         super(driver);
@@ -23,6 +24,9 @@ public class SearchPageObject extends MainPageObject{
     /* TEMPLATES METHODS */
     private static String getResultSearchElement(String substring){
         return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
+    }
+    private static String getTitleAndDescriptionElement(String substring){
+        return SEARCH_DESCRIPTION_AND_TITLE_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
     }
     /* TEMPLATES METHODS */
 
@@ -57,7 +61,7 @@ public class SearchPageObject extends MainPageObject{
 
     public void waitForSearchResult(String substring){
         String search_result_xpath = getResultSearchElement(substring);
-        this.waitForElementPresent(By.xpath(search_result_xpath), "Не найден результат поиска!" + substring);
+        this.waitForElementPresent(By.xpath(search_result_xpath), "Не найден результат поиска: '" + substring + "'");
     }
 
     public void clickByArticleWithSubstring(String substring){
@@ -91,5 +95,12 @@ public class SearchPageObject extends MainPageObject{
                return true;
         return false;
 
+    }
+
+    public int  waitForElementByTitleAndDescription(String s_id_title, String s_id_description, String s_title, String s_description){
+        String s_search_title = getTitleAndDescriptionElement(s_id_title);
+        String s_search_description = getTitleAndDescriptionElement(s_id_description);
+
+        return this.getAmountPairElementsWithText(s_search_title, s_search_description, s_title, s_description);
     }
 }

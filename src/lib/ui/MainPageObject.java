@@ -144,4 +144,26 @@ public class MainPageObject {
         WebElement element = waitForElementPresent(by, error_message,timeInSeconds);
         return element.getAttribute(attribute);
     }
+
+    public int getAmountPairElementsWithText(String s_by1, String s_by2, String s1, String s2){
+        int count_match = 0;
+        String s_text1, s_text2;
+
+        By by1 = By.id(s_by1);
+        By by2 = By.id(s_by2);
+
+        List<WebElement> list_elements_1 = driver.findElements(by1);
+        List<WebElement> list_elements_2 = driver.findElements(by2);
+
+        for (int i = 0; i < list_elements_1.size(); i++){
+            s_text1 = list_elements_1.get(i).getText();
+
+            if (i >= 0 && i < list_elements_2.size()) {
+                s_text2 = list_elements_2.get(i).getText();
+                if (s_text1.contains(s1) & s_text2.contains(s2)) count_match++;
+            }
+        }
+       return count_match;
+    }
 }
+

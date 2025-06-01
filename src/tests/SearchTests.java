@@ -107,4 +107,31 @@ public class SearchTests extends CoreTestCase {
 
         System.out.println("Тест для ДОМАШНЕГО ЗАДАНИЯ (Ex4*: Тест: проверка слов в поиске) завершён!");
     }
+
+    @Test
+    public void testTemplaterefactoring_Ex9() { // Тест для ДОМАШНЕГО ЗАДАНИЯ (Ex9*: Рефакторинг темплейта)
+        int need_match = 3;
+
+        String search_line = "Sport",
+               search_title = "port",
+               search_description = "club";
+
+        String by_search_title = "page_list_item_title",
+               by_search_description = "page_list_item_description";
+
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine(search_line);
+        SearchPageObject.waitForSearchResult(search_line);
+
+        int find_match = SearchPageObject.waitForElementByTitleAndDescription( by_search_title, by_search_description, search_title, search_description);
+
+        assertTrue(
+                "Найдено менее " + need_match + " статей с заголовком '" + search_title + "' и описанием '" + search_description + "'",
+                find_match >= need_match
+        );
+        System.out.println("Всего статей = " + find_match);
+
+        System.out.println("Тест для ДОМАШНЕГО ЗАДАНИЯ (Ex9*: Рефакторинг темплейта) завершён!");
+    }
 }
