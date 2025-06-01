@@ -15,6 +15,8 @@ public class SearchPageObject extends MainPageObject{
             SEARCH_EMPTY_RESULT_ELEMENT = "org.wikipedia:id/results_text",
             SEARCH_CANCEL_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']",
             SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_title'][@text='{SUBSTRING}']",
+            SEARCH_TITLE = "page_list_item_title",
+            SEARCH_DESCRIPTION = "page_list_item_description",
             SEARCH_DESCRIPTION_AND_TITLE_BY_SUBSTRING_TPL ="org.wikipedia:id/{SUBSTRING}";
 
     public SearchPageObject(AppiumDriver driver){
@@ -97,9 +99,9 @@ public class SearchPageObject extends MainPageObject{
 
     }
 
-    public int  waitForElementByTitleAndDescription(String s_id_title, String s_id_description, String s_title, String s_description){
-        String s_search_title = getTitleAndDescriptionElement(s_id_title);
-        String s_search_description = getTitleAndDescriptionElement(s_id_description);
+    public int  waitForElementByTitleAndDescription(String s_title, String s_description){
+        String s_search_title = getTitleAndDescriptionElement(SEARCH_TITLE);
+        String s_search_description = getTitleAndDescriptionElement(SEARCH_DESCRIPTION);
 
         return this.getAmountPairElementsWithText(s_search_title, s_search_description, s_title, s_description);
     }
