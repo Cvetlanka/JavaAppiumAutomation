@@ -24,12 +24,12 @@ public class MyListsTests extends CoreTestCase {
         SearchPageObject.clickByArticleWithSubstring(first_article);
 
         ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
-        ArticlePageObject.createListAndSaveArticleInIt(first_article, name_list);
+        ArticlePageObject.createListAndSaveArticleInIt(name_list);
         ArticlePageObject.closeArticle();
 
         SearchPageObject.clickByArticleWithSubstring(second_article);
 
-        ArticlePageObject.addToExistListAnyArticle(second_article, name_list);
+        ArticlePageObject.addToExistListAnyArticle(name_list);
         ArticlePageObject.closeArticle();
 
         SearchPageObject.clickCancelSearch();

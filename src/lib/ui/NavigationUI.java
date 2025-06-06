@@ -5,12 +5,12 @@ import org.openqa.selenium.By;
 
 public class NavigationUI extends MainPageObject{
     private static final String
-            BTN_SAVED = "//android.widget.FrameLayout[@content-desc='Saved']/android.view.ViewGroup/android.widget.TextView";
+            BTN_SAVED = "xpath://android.widget.FrameLayout[@content-desc='Saved']/android.view.ViewGroup/android.widget.TextView";
 
     public NavigationUI(AppiumDriver driver){
         super(driver);
     }
     public void clickMyList(){
-        this.waitForElementAndClick(By.xpath(BTN_SAVED),"Не найдена кнопка сохраненных списков 'Saved'", 7);
+        this.waitForElementAndClick(BTN_SAVED,"Не найдена кнопка сохраненных списков 'Saved'", 7);
     }
 }
